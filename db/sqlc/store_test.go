@@ -57,8 +57,6 @@ func TestTransferTx(t *testing.T) {
 
 		// check entries
 		fromEntry := result.FromEntry
-		fmt.Println("testing", account1.ID)
-		fmt.Println("testing", fromEntry.AccountID)
 		require.NotEmpty(t, fromEntry)
 		require.Equal(t, account1.ID, fromEntry.AccountID)
 		require.Equal(t, -amount, fromEntry.Amount)
@@ -78,7 +76,6 @@ func TestTransferTx(t *testing.T) {
 		_, err = store.GetEntry(context.Background(), toEntry.ID)
 		require.NoError(t, err)
 
-		fmt.Println("before check Accounts")
 		// check accounts
 		fromAccount := result.FromAccount
 		require.NotEmpty(t, fromAccount)
@@ -89,7 +86,6 @@ func TestTransferTx(t *testing.T) {
 		require.Equal(t, account2.ID, toAccount.ID)
 
 		// check balances
-		fmt.Println(">> tx:", fromAccount.Balance, toAccount.Balance)
 
 		diff1 := account1.Balance - fromAccount.Balance
 		diff2 := toAccount.Balance - account2.Balance
