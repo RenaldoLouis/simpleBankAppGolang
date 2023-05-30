@@ -8,6 +8,8 @@ import (
 	"simplebank/db/util"
 
 	_ "github.com/lib/pq"
+
+	_ "github.com/golang/mock/mockgen/model"
 )
 
 func main() {
