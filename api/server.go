@@ -2,6 +2,7 @@ package api
 
 import (
 	db "simplebank/db/sqlc"
+	"simplebank/db/util"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -9,12 +10,18 @@ import (
 )
 
 type Server struct {
+	config util.Config
 	store  db.Store
+	// tokenMaker token.Maker
 	router *gin.Engine
 }
 
-func NewServer(store db.Store) *Server {
-	server := &Server{store: store}
+func NewServer(config util.Config, store db.Store) (*Server, error) {
+	server := &Server{
+		config: config,
+		store:  store,
+		// tokenMaker: tokenMaker,
+	}
 	router := gin.Default()
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
@@ -30,7 +37,7 @@ func NewServer(store db.Store) *Server {
 	router.POST("/transfers", server.CreateTransfer)
 
 	server.router = router
-	return server
+	return server, nil
 }
 
 func (server *Server) Start(address string) error {
