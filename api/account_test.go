@@ -22,7 +22,6 @@ import (
 
 func TestGetAccountAPI(t *testing.T) {
 	user, _ := randomUser(t)
-
 	account := randomAccount(user.Username)
 
 	testCases := []struct {
@@ -139,7 +138,6 @@ func TestGetAccountAPI(t *testing.T) {
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
-			//start test server and send request
 			server := newTestServer(t, store)
 			recorder := httptest.NewRecorder()
 
@@ -147,6 +145,7 @@ func TestGetAccountAPI(t *testing.T) {
 			request, err := http.NewRequest(http.MethodGet, url, nil)
 			require.NoError(t, err)
 
+			tc.setupAuth(t, request, server.tokenMaker)
 			server.router.ServeHTTP(recorder, request)
 			tc.checkResponse(t, recorder)
 		})
